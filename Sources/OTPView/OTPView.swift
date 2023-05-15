@@ -34,19 +34,9 @@ public class OTPView: UIView {
     public var onOTPChange: ((Bool) -> Void)?
     public var shouldHideOTP: ((Bool) -> Void)?
 
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        setupViews()
-    }
-
-    required init?(coder: NSCoder) {
-        super.init(coder: coder)
-        setupViews()
-    }
-
     public override func layoutSubviews() {
         super.layoutSubviews()
-
+        setupViews()
         configureFields()
     }
 
@@ -110,7 +100,7 @@ public class OTPView: UIView {
         // Trim to only one character
         textField.text = String(text.prefix(1))
 
-        let otp = textFieldArray.map { $0.text ?? "" }.joined()
+        let otp = getOTP()
         onOTPChange?(otp.count == numberOfFields)
     }
 
@@ -125,6 +115,8 @@ public class OTPView: UIView {
             for i in 0..<numberOfFields {
                 textFieldArray[i].text = String(characters[i])
             }
+            let otp = getOTP()
+            onOTPChange?(otp.count == numberOfFields)
         }
     }
 
